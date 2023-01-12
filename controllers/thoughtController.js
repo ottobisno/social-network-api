@@ -74,7 +74,7 @@ module.exports = {
             )
             .catch((err) => res.status(500).json(err));
     },
-    // Add a reaction to a video
+    // Add a reaction to a thought
     addReaction(req, res) {
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
@@ -82,13 +82,13 @@ module.exports = {
             { runValidators: true, new: true }
         )
             .then((thought) =>
-                !video
+                !thought
                     ? res.status(404).json({ message: 'No thought found with that ID' })
                     : res.json(thought)
             )
             .catch((err) => res.status(500).json(err));
     },
-    // Remove a reaction from a video
+    // Remove a reaction from a thought
     removeReaction(req, res) {
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },

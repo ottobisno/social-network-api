@@ -22,7 +22,7 @@ module.exports = {
     // Create a new user
     createUser(req, res) {
         User.create(req.body)
-            .then((uer) => res.json(user))
+            .then((user) => res.json(user))
             .catch((err) => {
                 console.log(err);
                 return res.status(500).json(err);
@@ -58,7 +58,7 @@ module.exports = {
         console.log('req.body');
         User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $addToSet: { friends: req.body } },
+            { $addToSet: { friends: req.body.friendId } },
             { runValidators: true, new: true }
         )
             .then((user) =>
@@ -72,13 +72,13 @@ module.exports = {
     removeFriend(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $pull: { friends: { friendId: req.params.friendId } } },
+            { $pull: { friends: req.params.friendId } },
             { runValidators: true, new: true }
         )
             .then((user) =>
-            !user
-                ? res.status(404).json({ message: 'No user found with that ID' })
-                : res.json(user)
+                !user
+                    ? res.status(404).json({ message: 'No user found with that ID' })
+                    : res.json(user)
             )
             .catch((err) => res.status(500).json(err));
     }
